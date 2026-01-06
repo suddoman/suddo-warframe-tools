@@ -2,9 +2,118 @@
 <html>
 <body>
 
-<h1>My First Heading</h1>
+<h1>Relic Value Calculator</h1>
 
-<p>My first paragraph.</p>
+<p>
+	Insert the value of each item (Plat or Ducats) <br>
+</p>
+
+<!--
+TODO:
+Default values?
+-->
+
+
+ <form>
+	<label for="reward1">Common Reward:</label>
+	<input type="number" id="reward1" name="reward1" min="0" max="500" value="1"> <br>
+	<label for="reward2">Common Reward:</label>
+	<input type="number" id="reward2" name="reward2" min="0" max="500" value="1"> <br>
+	<label for="reward3">Common Reward:</label>
+	<input type="number" id="reward3" name="reward3" min="0" max="500" value="1"> <br>
+
+	<label for="reward4">Common Reward:</label>
+	<input type="number" id="reward4" name="reward4" min="0" max="500" value="3"> <br>
+	<label for="reward5">Common Reward:</label>
+	<input type="number" id="reward5" name="reward5" min="0" max="500" value="3"> <br>
+
+	<label for="reward6">Common Reward:</label>
+	<input type="number" id="reward6" name="reward6" min="0" max="500" value="9"> <br>
+
+
+
+</form> 
+
+	<button onclick="populate_Averages()">Calculate</button>
+	<p id="test1"></p>	
+	<table>
+		<tr>
+			<th> Quality </th>
+			<th> Value </th>
+			<th> Gain </th>
+			<th> Per 100 Void </th>
+		</tr>
+		<tr> <!-- -->
+			<th> Intact </th>
+			<th id=intact1></th>
+			<th id=intact2></th>
+			<th id=intact3></th>
+			
+		</tr>
+		<tr>
+			<th> Exceptional </th>
+			<th id=except1></th>
+			<th id=except2></th>
+			<th id=except3></th>
+		</tr>
+		<tr>
+			<th> Flawless </th>
+			<th id=flawless1></th>
+			<th id=flawless2></th>
+			<th id=flawless3></th>
+		</tr>
+		<tr>
+			<th> Radiant </th>
+			<th id=radiant1></th>
+			<th id=radiant2></th>
+			<th id=radiant3></th>
+		</tr>
+	</table>
+
+
+<<!-- SCRIPT -->
+<script>
+
+function populate_Averages(){
+	var r1 = parseInt(document.getElementById("reward1").value, 10);
+	var r2 = parseInt(document.getElementById("reward2").value, 10);
+	var r3 = parseInt(document.getElementById("reward3").value, 10);
+	var r4 = parseInt(document.getElementById("reward4").value, 10);
+	var r5 = parseInt(document.getElementById("reward5").value, 10);
+	var r6 = parseInt(document.getElementById("reward6").value, 10);
+
+	var intact = Math.round(( (r1*0.2533)+(r2*0.2533)+(r3*0.2533)+(r4*0.11)+(r5*0.11)+(r6*0.02)) *100)/100;
+	
+	var exceptional = Math.round(( (r1*0.2333)+(r2*0.2333)+(r3*0.2333)+(r4*0.13)+(r5*0.13)+(r6*0.04)) *100)/100;
+	
+	var flawless = Math.round(( (r1*0.2)+(r2*0.2)+(r3*0.2)+(r4*0.17)+(r5*0.17)+(r6*0.06)) *100)/100;
+	
+	var radiant = Math.round(( (r1*0.1667)+(r2*0.1667)+(r3*0.1667)+(r4*0.2)+(r5*0.2)+(r6*0.1)) *100)/100;
+	
+	//1 is the value, 2 is the increase from intact, 3 is per void trace
+	
+	//Intact
+	document.getElementById("intact1").innerHTML = intact;
+	document.getElementById("intact2").innerHTML = 0;
+	document.getElementById("intact3").innerHTML = 0;
+	
+	//Exceptional
+	document.getElementById("except1").innerHTML = exceptional;
+	document.getElementById("except2").innerHTML = Math.round((exceptional - intact)*100)/100;
+	document.getElementById("except3").innerHTML = Math.round(((exceptional - intact)*4)*100)/100;
+	
+	//Flawless
+	document.getElementById("flawless1").innerHTML = flawless;
+	document.getElementById("flawless2").innerHTML = Math.round((flawless - intact)*100)/100;
+	document.getElementById("flawless3").innerHTML = Math.round(((flawless - intact)*2)*100)/100;
+	
+	//Radiant
+	document.getElementById("radiant1").innerHTML = radiant;
+	document.getElementById("radiant2").innerHTML = Math.round((radiant - intact)*100)/100;
+	document.getElementById("radiant3").innerHTML = Math.round((radiant - intact)*100)/100;
+}
+</script>
+
 
 </body>
 </html>
