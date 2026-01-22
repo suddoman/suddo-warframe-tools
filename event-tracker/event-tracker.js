@@ -1,38 +1,58 @@
-async function testFetch() {
-  const url = "https://api.warframestat.us/pc/";
-  try {
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error(`Response status: ${response.status}`);
-      document.getElementById("test1").innerHTML = "Failed"
+const A_TIER = "aTier"
+
+async function apiFetch() {
+    const WF_URL = "https://api.warframestat.us/pc/";
+
+    const var1 = await fetch(WF_URL);
+    const var2 = await var1.json();
+
+    return var2;
+}
+
+async function populate(){
+    bigAPI = await apiFetch();
+    //console.log(bigAPI.fissures[0].node);
+
+    bigAPI.fissures.forEach(fissures => {
+        //console.log(fissures.node)
+        quality = isMissionGood(fissures);
+        if (quality != "Bad"){
+            addMission(fissures, quality);
+        }
+        //addText(fissures.node, "aTier");
     }
-
-    const parsedResponse = await response;
-    console.log(parsedResponse);
-    return parsedResponse;
-    
-  } catch (error) {
-    console.error(error.message);
-  }
+    )
 }
 
-function populate(){
-    testFetch().then(result => {
-        //var data = JSON.parse(result);
-        // do things with the result here, like call functions with them
-        console.log(result);
-        console.log(data);
-
-    })
+function isMissionGood(mission){
+    //TODO: THIS NEEDS TO BE A BIG LIST. I DON'T KNOW THE CLEANEST WAY TO DO THIS
+    //It should be mission.nodeKey compared to a list to check if it is good.
+    //There should be multiple tiers, maybe a case statement I dunno.
+    if (mission.missionType == "Defense" || mission.missionType == "Void Cascade") {
+        //console.log(mission.missionType + " " + mission.nodeKey + " " + mission.tier + " " + isSteelPath(mission.isHard));
+        return A_TIER
+    }
+    //else
+    return "Bad"
 }
 
-async function initFetch() {
-    // import WorldState from 'warframe-worldstate-data';
-    // using this syntax to make it precisely testable in a test
-    //const WorldStateParser = await import('warframe-worldstate-parser');
-    const worldstateData = await fetch('https://api.warframe.com/cdn/worldState.php').then((data) => data.text());
+function isSteelPath(isHard){
+    if(isHard){return "Steel Path"};
+    //else
+    return "Wood Path";
+}
 
-    const ws = await WorldStateParser(worldstateData);
+function addMission(mission, quality){
+    addText((mission.missionType + " " + mission.nodeKey + " " + mission.tier + " " + isSteelPath(mission.isHard)),
+            quality);
+}
 
-    console.log(ws.alerts[0].toString());
+function addText(text, location){
+    //This is vibe coded beware
+    const newElement = document.createElement("div");
+    newElement.textContent = text;
+
+    const targetElement = document.getElementById(location);
+
+    targetElement.insertAdjacentElement("afterend", newElement);
 }
